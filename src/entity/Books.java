@@ -4,10 +4,12 @@ public class Books extends Library {
 
     private boolean disponible;
 
-    public Books(String name, String description, String author, int edition) {
-        super(name, description, author, edition);
+    public Books(String name, String author, int edition) {
+        super(name, author, edition);
     }
+    public Books(){
 
+    }
     public boolean isDisponible() {
         return disponible;
     }
