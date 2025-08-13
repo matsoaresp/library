@@ -10,15 +10,21 @@ public class Books extends Library {
     public Books(){
 
     }
-    public boolean isDisponible() {
-        return disponible;
-    }
-
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
 
-    public void emprestado (){
-        setDisponible(false);
+    public boolean isEmprestado (){
+        return this.disponible;
+    }
+
+    public void borrowed(){
+
+        this.disponible = true;
+    }
+
+    public void devolver (){
+
+        this.disponible = false;
     }
 }
