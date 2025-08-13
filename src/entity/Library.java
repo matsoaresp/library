@@ -3,12 +3,17 @@ package entity;
 public abstract class Library {
 
     private String name;
-    private String description;
+
     private String author;
 
-    public Library(String name, String description, String author, int edition) {
+    public Library() {
+        this.name = "";
+
+        this.author = "";
+        this.edition = 0;
+    }
+    public Library(String name, String author, int edition) {
         this.name = name;
-        this.description = description;
         this.author = author;
         this.edition = edition;
     }
@@ -21,13 +26,6 @@ public abstract class Library {
         this.author = author;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getName() {
         return name;
