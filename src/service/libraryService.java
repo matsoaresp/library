@@ -10,6 +10,7 @@ import entity.Books;
 public class libraryService {
 
     private List<Books> booksList;
+    private List<User> userList;
 
     public libraryService(List<Books> booksList) {
         this.booksList = booksList;
@@ -69,39 +70,41 @@ public class libraryService {
         }
     }
 
-    public void getBooksList() {
+    public List<Books> getBooksList() {
 
-        User user = new User();
+        if (booksList == null || booksList.isEmpty()) {
+            System.out.println("Nenhum livro cadastrado");
+        }
+        System.out.println("Livros disponíveis");
+        for (Books book : booksList) {
+            System.out.println("Nome: "+book.getName() + ", Autor: " + book.getAuthor() + ", Edição: " + book.getEdition());
+                if (book.isEmprestado()) {
+                    System.out.println("Livros emprestados");
+                    System.out.println("Emprestado para: " +book.getUsuarioEmprestimo().getName());
+                }
+        }
+        return null;
+    }
+
+    public void emprestar() {
+
+
+        Scanner sc = new Scanner(System.in);
 
         if (booksList == null || booksList.isEmpty()) {
             System.out.println("Nenhum livro cadastrado");
             return;
         }
-        System.out.println("Livros disponíveis");
-        for (Books book : booksList) {
-            System.out.println("Nome: "+book.getName() + ", Autor: " + book.getAuthor() + ", Edição: " + book.getEdition());
-            if (book.isEmprestado()) {
-                System.out.println("Livros emprestados");
-                System.out.println("Emprestado para: " + user.getName());
-            }
-        }
-    }
-
-    public void emprestar() {
-
-        User user = new User();
-        Scanner sc = new Scanner(System.in);
-
-        if (booksList == null || booksList.isEmpty()) {
-            System.out.println("Nenhum livro cadastrado");
-
-        }else {
             System.out.println("Informe qual livro deseja emprestar: ");
             String nomeLivro = sc.nextLine();
+
+            String nomeUser = sc.nextLine();
+            User user = new User(nomeUser);
+
             for (Books book : booksList) {
 
                 if (book.getName().equals(nomeLivro)) {
-                    book.borrowed();
+                    book.emprestadoPara(user);
                     System.out.println("Livro emprestado para: "+user.getName());
                 }else {
                     System.out.println("Livro não encontrado");
@@ -109,8 +112,10 @@ public class libraryService {
                 }
             }
         }
-    }
     public void runApllication(){
         selectOptions();
     }
-}
+    }
+
+
+
