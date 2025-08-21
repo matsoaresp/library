@@ -95,22 +95,24 @@ public class libraryService {
             System.out.println("Nenhum livro cadastrado");
             return;
         }
+            System.out.println("Informe seu nome: ");
+            String nomeUser = sc.nextLine();
             System.out.println("Informe qual livro deseja emprestar: ");
             String nomeLivro = sc.nextLine();
 
-            String nomeUser = sc.nextLine();
             User user = new User(nomeUser);
-
+            boolean emprestado = false;
             for (Books book : booksList) {
-
                 if (book.getName().equals(nomeLivro)) {
                     book.emprestadoPara(user);
-                    System.out.println("Livro emprestado para: "+user.getName());
-                }else {
-                    System.out.println("Livro não encontrado");
+                    System.out.println("Livro emprestado para: "+book.getUsuarioEmprestimo().getName());
+                    emprestado = true;
                     break;
                 }
             }
+        if (!emprestado) {
+            System.out.println("Livro não encontrado");
+        }
         }
     public void runApllication(){
         selectOptions();
