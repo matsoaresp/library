@@ -74,20 +74,30 @@ public class libraryService {
 
         if (booksList == null || booksList.isEmpty()) {
             System.out.println("Nenhum livro cadastrado");
+            return null;
         }
-        System.out.println("Livros disponíveis");
+        System.out.println("Livros disponiveis");
         for (Books book : booksList) {
-            System.out.println("Nome: "+book.getName() + ", Autor: " + book.getAuthor() + ", Edição: " + book.getEdition());
-                if (book.isEmprestado()) {
-                    System.out.println("Livros emprestados");
-                    System.out.println("Emprestado para: " +book.getUsuarioEmprestimo().getName());
+            if(!book.isEmprestado()){
+                System.out.println("Livro: "+book.getName() + ", Autor: " + book.getAuthor() + ", Edição: " + book.getEdition());
+            }
+        }
+        System.out.println("Livros emprestados");
+        boolean emprestado = false;
+        for(Books book : booksList){
+                if(book.isEmprestado()){
+                    System.out.println("Livro: " + book.getName() + " | Emprestado para: " + book.getUsuarioEmprestimo().getName());
+                    emprestado = true;
                 }
+            }
+
+        if (!emprestado) {
+            System.out.println("Nenhum livro emprestado");
         }
         return null;
     }
 
     public void emprestar() {
-
 
         Scanner sc = new Scanner(System.in);
 

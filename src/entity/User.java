@@ -6,7 +6,9 @@ public class User {
     private int id;
 
     public User(String nomeUser) {
+        this.name = nomeUser;
     }
+
 
     public String getName() {
         return name;
