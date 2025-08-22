@@ -1,49 +1,56 @@
 package service;
-
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.List;
 import java.util.Scanner;
-
 import entity.User;
 import view.viewApplication;
 import entity.Books;
 
 public class libraryService {
 
+    private static final Logger logger = Logger.getLogger(libraryService.class.getName());
     private List<Books> booksList;
-    private List<User> userList;
 
     public libraryService(List<Books> booksList) {
         this.booksList = booksList;
     }
 
     public void addBook(Books book) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Quantos livros deseja inserir");
-        int n = sc.nextInt();
-        sc.nextLine();
-        for (int i = 1; i <= n; i++) {
-            System.out.println(i + "º Livro");
-
-            viewApplication.showName();
-            String name = sc.nextLine();
-
-            viewApplication.showAuthor();
-            String author = sc.nextLine();
-
-            viewApplication.showEdition();
-            int edition = sc.nextInt();
+        logger.info("\u001B[32m[INFO] Opção de adicionar livros\u001B[0m");
+        try{
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Quantos livros deseja inserir");
+            int n = sc.nextInt();
             sc.nextLine();
+            for (int i = 1; i <= n; i++) {
+                System.out.println(i + "º Livro");
 
-            booksList.add(new Books(
-                    name,
-                    author,
-                    edition
-            ));
+                viewApplication.showName();
+                String name = sc.nextLine();
+
+                viewApplication.showAuthor();
+                String author = sc.nextLine();
+
+                viewApplication.showEdition();
+                int edition = sc.nextInt();
+                sc.nextLine();
+
+                booksList.add(new Books(
+                        name,
+                        author,
+                        edition
+                ));
+            }
+        }catch (Exception e){
+            logger.severe("\u001B[31m[ERROR] Erro ao adicionar livros: " + e.getMessage() + "\u001B[0m");
+            e.printStackTrace();
         }
+
     }
 
     public void selectOptions() {
-
+        logger.info("\u001B[32m[INFO] Iniciando aplicação \u001B[0m");
         Scanner sc = new Scanner(System.in);
         Books book = new Books();
         String option = "";
@@ -99,12 +106,13 @@ public class libraryService {
 
     public void emprestar() {
 
-        Scanner sc = new Scanner(System.in);
-
-        if (booksList == null || booksList.isEmpty()) {
-            System.out.println("Nenhum livro cadastrado");
-            return;
-        }
+        try{
+            logger.info("\u001B[32m[INFO] Opção de emprestar livros \u001B[0m");
+            Scanner sc = new Scanner(System.in);
+            if (booksList == null || booksList.isEmpty()) {
+                logger.log(Level.WARNING,"Nenhum livro cadastrado");
+                return;
+            }
             System.out.println("Informe seu nome: ");
             String nomeUser = sc.nextLine();
             System.out.println("Informe qual livro deseja emprestar: ");
@@ -120,8 +128,14 @@ public class libraryService {
                     break;
                 }
             }
-        if (!emprestado) {
-            System.out.println("Livro não encontrado");
+            if (!emprestado) {
+                logger.log(Level.WARNING,"Nenhum livro emprestado");
+            }
+        }catch (IllegalArgumentException e ){
+            logger.severe("\u001B[31m[ERROR] Entrada inválida: " + e.getMessage() + "\u001B[0m");
+        }catch (Exception e){
+            logger.severe("\u001B[31m[ERROR] Erro inesperado: " + e.getMessage() + "\u001B[0m");
+            e.printStackTrace();
         }
         }
     public void runApllication(){
