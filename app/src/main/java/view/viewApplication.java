@@ -9,7 +9,7 @@ public class viewApplication {
         System.out.println("Informe o nome do autor do livro");
     }
     public static void showEdition(){
-        System.out.println("Informe a edição do livro");
+        System.out.println("Informe a edicao do livro");
     }
     public static void showOptions(){
         System.out.println("==== MENU ====");
@@ -18,7 +18,7 @@ public class viewApplication {
         System.out.println("3 - Emprestar livro");
         System.out.println("4 - Devolver livro");
         System.out.println("0 - Sair");
-        System.out.print("Escolha uma opção: ");
+        System.out.print("Escolha uma opcaoo: ");
 
     }
 }

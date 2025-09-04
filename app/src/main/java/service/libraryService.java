@@ -1,11 +1,13 @@
 package service;
-import java.util.logging.Logger;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.List;
 import java.util.Scanner;
 import entity.User;
 import view.viewApplication;
 import entity.Books;
+
 
 public class libraryService {
 
@@ -14,10 +16,26 @@ public class libraryService {
 
     public libraryService(List<Books> booksList) {
         this.booksList = booksList;
+
+        Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(Level.ALL);
+
+        for (var handler : rootLogger.getHandlers()) {
+            rootLogger.removeHandler(handler);
+        }
+
+        ConsoleHandler handler = new ConsoleHandler() {
+            @Override
+            protected synchronized void setOutputStream(java.io.OutputStream out) throws SecurityException {
+                super.setOutputStream(System.out);
+            }
+        };
+        handler.setLevel(Level.ALL);
+        rootLogger.addHandler(handler);
     }
 
     public void addBook(Books book) {
-        logger.info("\u001B[32m[INFO] Opção de adicionar livros\u001B[0m");
+        logger.info("\u001B[32m[INFO] Opcao de adicionar livros\u001B[0m");
         try{
             Scanner sc = new Scanner(System.in);
             System.out.println("Quantos livros deseja inserir");
@@ -50,7 +68,7 @@ public class libraryService {
     }
 
     public void selectOptions() {
-        logger.info("\u001B[32m[INFO] Iniciando aplicação \u001B[0m");
+        logger.info("\u001B[32m[INFO] Iniciando aplicacao \u001B[0m");
         Scanner sc = new Scanner(System.in);
         Books book = new Books();
         String option = "";
@@ -67,11 +85,14 @@ public class libraryService {
                 case "3":
                     emprestar();
                     break;
+                case "4":
+                    devolver();
+                    break;
                 case "0":
-                    System.out.println("Execução encerrada.");
+                    System.out.println("Execucao encerrada.");
                     break;
                 default:
-                    System.out.println("Opção incorreta. Tente novamente.");
+                    logger.warning("\u001B[31m[ERROR] Opcao incorreta. Tente novamente: \u001B[0m");
                     break;
             }
         }
@@ -86,7 +107,9 @@ public class libraryService {
         System.out.println("Livros disponiveis");
         for (Books book : booksList) {
             if(!book.isEmprestado()){
-                System.out.println("Livro: "+book.getName() + ", Autor: " + book.getAuthor() + ", Edição: " + book.getEdition());
+                System.out.println("Livro: "+book.getName() + ", Autor: " + book.getAuthor() + ", Edicao: " + book.getEdition());
+            }else {
+                System.out.println("Nenhum livro disponivel");
             }
         }
         System.out.println("Livros emprestados");
@@ -107,7 +130,7 @@ public class libraryService {
     public void emprestar() {
 
         try{
-            logger.info("\u001B[32m[INFO] Opção de emprestar livros \u001B[0m");
+            logger.info("\u001B[32m[INFO] Opcao de emprestar livros \u001B[0m");
             Scanner sc = new Scanner(System.in);
             if (booksList == null || booksList.isEmpty()) {
                 logger.log(Level.WARNING,"Nenhum livro cadastrado");
@@ -136,6 +159,38 @@ public class libraryService {
         }catch (Exception e){
             logger.severe("\u001B[31m[ERROR] Erro inesperado: " + e.getMessage() + "\u001B[0m");
             e.printStackTrace();
+        }
+        }
+
+        public void devolver (){
+
+        try{
+            logger.info("\u001B[32m[INFO] Opcao de devolver livros \u001B[0m");
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Livros emprestados");
+            boolean emprestado = false;
+            for(Books book : booksList){
+                if(book.isEmprestado()){
+                    System.out.println("Livro: " + book.getName());
+                    emprestado = true;
+                }
+            }
+            if (!emprestado) {
+                System.out.println("Nenhum livro emprestado");
+            }
+
+            System.out.println("Informe o nome do livro");
+            String nomeLivro = sc.nextLine();
+            for (Books book : booksList) {
+                if (book.getName().equals(nomeLivro)) {
+                    book.devolverPara(null);
+
+                    System.out.println("Livro devolvido");
+                }
+            }
+        }catch (IllegalArgumentException e ){
+            logger.severe("Erro ao devolver livro");
         }
         }
     public void runApllication(){

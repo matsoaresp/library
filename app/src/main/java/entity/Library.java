@@ -1,10 +1,12 @@
 package entity;
 
+
 public abstract class Library {
 
+    private Long id;
     private String name;
-
     private String author;
+
 
     public Library() {
         this.name = "";
@@ -45,4 +47,11 @@ public abstract class Library {
 
     private int edition;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
